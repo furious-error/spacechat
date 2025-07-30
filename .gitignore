@@ -1,0 +1,11 @@
+.env
+.vscode/
+node_modules/
+.DS_Store
+dist/
+__pycache__/
+*.pyc
+venv/
+*.log
+chroma_db/
+*.sqlite3
