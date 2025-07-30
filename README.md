@@ -136,3 +136,6 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 *Embark on an infinite journey through space and ideas with Cosmic Quest!* 🌌✨
+
+
+Note: The Readme was generated using LLM
