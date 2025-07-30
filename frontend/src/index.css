@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Custom animations for idea-centric UI */
+
 @keyframes float {
 
     0%,
@@ -67,7 +67,7 @@
     }
 }
 
-/* Space-themed animations */
+
 @keyframes twinkle {
 
     0%,

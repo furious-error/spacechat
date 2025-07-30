@@ -25,11 +25,9 @@ def search_nasa_images(query: str, count: int = 3) -> List[str]:
         data = response.json()
         
         image_urls = []
-        # Ensure 'collection' and 'items' keys exist
         if 'collection' in data and 'items' in data['collection']:
             items = data['collection']['items']
-            for item in items[:count]: # Limit to the requested count
-                # Ensure the item has a 'links' key and at least one link
+            for item in items[:count]: 
                 if 'links' in item and item['links']:
                     image_urls.append(item['links'][0]['href'])
         

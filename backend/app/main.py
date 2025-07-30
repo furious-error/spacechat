@@ -4,28 +4,25 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from .models import ChatRequest, ActionRequest, FactCheckResponse, FactCheckRequest # Import new model
-from .orchestrator import get_agentic_response, handle_agent_action, perform_fact_check # Import new function
+from .models import ChatRequest, ActionRequest, FactCheckResponse, FactCheckRequest 
+from .orchestrator import get_agentic_response, handle_agent_action, perform_fact_check 
 
-# Load environment variables from .env file
 load_dotenv()
 
 app = FastAPI()
 
-# Configure CORS to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins, adjust for production
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
     """Handles the main chat queries."""
     try:
-        # Pass the query and optional image to the orchestrator
         response = await get_agentic_response(request.query, request.image_base64)
         return response
     except Exception as e:
@@ -33,7 +30,6 @@ async def chat(request: ChatRequest):
         raise HTTPException(status_code=500, detail="An internal server error occurred.")
 
 
-# --- NEW ---
 @app.post("/action")
 async def perform_action(request: ActionRequest):
     """Handles follow-up actions like ELI5, deep dive, etc."""
@@ -47,7 +43,6 @@ async def perform_action(request: ActionRequest):
         raise HTTPException(status_code=500, detail="Failed to perform the requested action.")
 
 
-# --- NEW ---
 @app.post("/fact-check")
 async def fact_check(request: FactCheckRequest):
     """Handles standalone fact-checking requests."""

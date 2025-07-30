@@ -3,7 +3,6 @@ import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'react';
 
-// Add CSS for animations
 const globalStyles = `
   @keyframes sparkle {
     0%, 100% { opacity: 0.3; }
@@ -49,7 +48,6 @@ const globalStyles = `
   }
 `;
 
-// Inject styles into head
 if (typeof document !== 'undefined') {
   const styleSheet = document.createElement("style");
   styleSheet.type = "text/css";
@@ -57,7 +55,6 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(styleSheet);
 }
 
-// --- Helper Components ---
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center p-4">
@@ -73,10 +70,8 @@ const ErrorDisplay = ({ message }) => (
   </div>
 );
 
-// --- Landing Page Component ---
 const LandingPage = ({ onStart }) => (
   <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950 text-white flex flex-col items-center justify-center p-4 text-center overflow-hidden relative">
-    {/* Pure CSS starfield background */}
     <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/50 via-purple-950/30 to-slate-950 opacity-90"></div>
     <div className="absolute inset-0" style={{
       background: `radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
@@ -84,7 +79,7 @@ const LandingPage = ({ onStart }) => (
                    radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.2) 0%, transparent 50%)`,
     }}></div>
 
-    {/* Pure CSS twinkling stars */}
+    
     <div className="absolute inset-0" style={{
       background: `radial-gradient(2px 2px at 20px 30px, #eee, transparent),
                    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
@@ -94,9 +89,9 @@ const LandingPage = ({ onStart }) => (
       animation: 'sparkle 4s ease-in-out infinite alternate',
     }}></div>
 
-    {/* Floating space elements */}
+    
     <div className="absolute inset-0 pointer-events-none">
-      {/* Pulsing stars */}
+      
       <div className="absolute top-16 left-12 animate-[twinkle_4s_ease-in-out_infinite] opacity-80">
         <div className="bg-yellow-400/30 rounded-full p-2 backdrop-blur-sm border border-yellow-300/40 shadow-lg shadow-yellow-400/20">
           <span className="text-xl">⭐</span>
@@ -113,7 +108,7 @@ const LandingPage = ({ onStart }) => (
         </div>
       </div>
 
-      {/* Floating cosmic objects */}
+      
       <div className="absolute top-32 left-8 animate-[orbit_20s_linear_infinite] opacity-60">
         <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full p-3 backdrop-blur-sm border border-cyan-400/30 shadow-xl shadow-cyan-400/10">
           <span className="text-2xl">🌍</span>
@@ -135,7 +130,7 @@ const LandingPage = ({ onStart }) => (
         </div>
       </div>
 
-      {/* Shooting stars */}
+      
       <div className="absolute top-1/4 left-0 animate-[shootingStar_8s_ease-out_infinite_3s] opacity-70">
         <div className="w-2 h-2 bg-white rounded-full shadow-lg shadow-white/50"></div>
       </div>
@@ -209,7 +204,7 @@ const LandingPage = ({ onStart }) => (
 );
 
 
-// --- Fact Checker Component ---
+
 const FactChecker = ({ onBack }) => {
   const [originalQuery, setOriginalQuery] = useState('');
   const [answerToCheck, setAnswerToCheck] = useState('');
@@ -251,7 +246,7 @@ const FactChecker = ({ onBack }) => {
 
   return (
     <div className="bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 text-white min-h-screen flex flex-col font-sans relative overflow-hidden">
-      {/* Pure CSS space background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/50 via-purple-950/30 to-slate-950 opacity-90"></div>
       <div className="absolute inset-0" style={{
         background: `radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
@@ -259,7 +254,7 @@ const FactChecker = ({ onBack }) => {
                      radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 70%)`,
       }}></div>
 
-      {/* Pure CSS twinkling stars */}
+      
       <div className="absolute inset-0 opacity-60" style={{
         background: `radial-gradient(1px 1px at 25px 35px, #fff, transparent),
                      radial-gradient(1px 1px at 85px 45px, rgba(255,255,255,0.8), transparent),
@@ -269,7 +264,7 @@ const FactChecker = ({ onBack }) => {
         animation: 'twinkle 3s ease-in-out infinite alternate',
       }}></div>
 
-      {/* Animated stars */}
+      
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 animate-[twinkle_3s_ease-in-out_infinite] opacity-60">
           <div className="w-1 h-1 bg-white rounded-full shadow-sm shadow-white/50"></div>
@@ -467,7 +462,7 @@ const FactChecker = ({ onBack }) => {
   );
 };
 
-// --- Chat Interface Component ---
+
 const ChatInterface = ({ onNavigateToFactChecker }) => {
   const [messages, setMessages] = useState([]);
   const [inputQuery, setInputQuery] = useState('');
@@ -523,7 +518,7 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
     setError(null);
-    setLastUserQuery(queryText); // Save the query as the topic
+    setLastUserQuery(queryText);
     setInputQuery('');
     setSelectedImage(null);
     setImageBase64(null);
@@ -571,7 +566,7 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
             id: `agent-action-${Date.now()}`,
             text: response.data.answer,
             images: [],
-            isActionable: false, // Don't show actions on an action response
+            isActionable: false,
           };
           setMessages(prev => [...prev, agentResponse]);
         }
@@ -600,7 +595,7 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
 
   return (
     <div className="bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 text-white min-h-screen flex flex-col font-sans relative overflow-hidden">
-      {/* Pure CSS space background */}
+      
       <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/50 via-purple-950/30 to-slate-950 opacity-90"></div>
       <div className="absolute inset-0" style={{
         background: `radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
@@ -608,7 +603,7 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
                      radial-gradient(circle at 20% 90%, rgba(59, 130, 246, 0.05) 0%, transparent 70%)`,
       }}></div>
 
-      {/* Pure CSS twinkling stars */}
+  
       <div className="absolute inset-0 opacity-50" style={{
         background: `radial-gradient(1px 1px at 45px 55px, #fff, transparent),
                      radial-gradient(1px 1px at 125px 25px, rgba(255,255,255,0.8), transparent),
@@ -618,7 +613,7 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
         animation: 'twinkle 4s ease-in-out infinite alternate',
       }}></div>
 
-      {/* Animated stars */}
+      
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 animate-[twinkle_3s_ease-in-out_infinite] opacity-60">
           <div className="w-1 h-1 bg-white rounded-full shadow-sm shadow-white/50"></div>
@@ -763,9 +758,9 @@ const ChatInterface = ({ onNavigateToFactChecker }) => {
   );
 }
 
-// --- Main App Component ---
+
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing', 'chat', 'factChecker'
+  const [currentView, setCurrentView] = useState('landing'); 
 
   const handleStartChat = () => setCurrentView('chat');
   const handleNavigateToFactChecker = () => setCurrentView('factChecker');

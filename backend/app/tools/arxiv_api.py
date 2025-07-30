@@ -15,18 +15,15 @@ def search_arxiv(query: str, max_results: int = 1) -> str:
         of the most relevant paper, or an error message if no paper is found.
     """
     try:
-        # Construct the search object
         search = arxiv.Search(
             query=query,
             max_results=max_results,
             sort_by=arxiv.SortCriterion.Relevance
         )
 
-        # Get the first result
         result = next(search.results(), None)
 
         if result:
-            # Format the output string
             authors = ", ".join(author.name for author in result.authors)
             return (
                 f"ARXIV PAPER FOUND:\n"

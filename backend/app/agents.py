@@ -11,10 +11,8 @@ from .tools.nasa_api import search_nasa_images
 from .tools.wikipedia_api import search_wikipedia
 from .models import ChatResponse, SuggestionResponse, FactCheckResponse
 
-# Load the API key from the environment
 api_key = os.getenv("GOOGLE_API_KEY")
 
-# --- Agent for Text-Only Queries ---
 def create_text_agent_chain():
     """Creates an agent chain specifically for handling text-only queries."""
     llm = ChatGoogleGenerativeAI(
@@ -23,10 +21,8 @@ def create_text_agent_chain():
         google_api_key=api_key
     )
     
-    # This LLM is configured to return a structured JSON object (our ChatResponse model)
     structured_llm = llm.with_structured_output(ChatResponse)
 
-    # A simpler prompt that does not include the image placeholder
     prompt = ChatPromptTemplate.from_messages([
         ("system", """
             You are a "Space Chat-Guide," an expert AI assistant for astronomy and space exploration.
@@ -46,7 +42,6 @@ def create_text_agent_chain():
         """)
     ])
 
-    # The chain is simpler: it gathers context, formats the prompt, and calls the LLM.
     agent_chain = RunnablePassthrough.assign(
         arxiv_context=lambda x: search_arxiv(x["query"]),
         wiki_context=lambda x: search_wikipedia(x["query"]),
@@ -55,7 +50,6 @@ def create_text_agent_chain():
     return agent_chain
 
 
-# --- Agent for Multimodal Queries (Text + Image) ---
 def create_multimodal_agent_chain():
     """Creates the main agent chain for handling chat queries with images."""
     llm = ChatGoogleGenerativeAI(
@@ -66,7 +60,6 @@ def create_multimodal_agent_chain():
     
     structured_llm = llm.with_structured_output(ChatResponse)
 
-    # The original prompt that includes the image placeholder
     prompt = ChatPromptTemplate.from_messages([
         ("system", """
             You are a "Space Chat-Guide," an expert AI assistant for astronomy and space exploration.
@@ -96,7 +89,6 @@ def create_multimodal_agent_chain():
     return agent_chain
 
 
-# --- Action Handler Agent ---
 def create_action_handler_chain(action_type: str):
     """Creates a specific chain to handle follow-up actions."""
     if action_type == "suggest_questions":
@@ -122,12 +114,11 @@ def create_action_handler_chain(action_type: str):
         return prompt | llm | StrOutputParser()
 
 
-# --- Fact Checker Agent ---
 def create_fact_checker_chain():
     """Creates a fact-checking agent to validate the accuracy of generated responses."""
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
-        temperature=0.2,  # Lower temperature for more consistent fact-checking
+        temperature=0.2, 
         google_api_key=api_key
     )
     
@@ -162,7 +153,6 @@ def create_fact_checker_chain():
         Be thorough but constructive in your fact-checking approach.
     """)
     
-    # Create the fact-checking chain with context gathering
     fact_check_chain = RunnablePassthrough.assign(
         arxiv_context=lambda x: search_arxiv(x["original_query"]),
         wiki_context=lambda x: search_wikipedia(x["original_query"]),
